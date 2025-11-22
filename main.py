@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request, Depends
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
+import uvicorn
 
 # Импорт готовых настроек (убедитесь, что вы сделали задание в database.py и parser.py)
 from database import SessionLocal, create_db, Quote
@@ -62,3 +63,12 @@ def parse_data(db: Session = Depends(get_db)):
     # Ваш код здесь
 
     return RedirectResponse(url="/", status_code=303)
+
+
+# =================================================================================
+# БЛОК ЗАПУСКА
+# =================================================================================
+if __name__ == "__main__":
+    print("Запуск сервера...")
+    # reload=True позволяет серверу перезагружаться при сохранении кода
+    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
