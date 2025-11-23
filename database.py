@@ -23,8 +23,11 @@ class Base(DeclarativeBase):
 # =================================================================================
 
 class Quote(Base):
-    pass  # Удалите pass и напишите ваш код здесь
+    tablename = "quotes"
 
+    id = Column(Integer, primary_key=True)
+    text = Column(String)
+    author = Column(String)
 
 def create_db():
     Base.metadata.create_all(bind=engine)

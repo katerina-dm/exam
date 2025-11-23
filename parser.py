@@ -25,6 +25,21 @@ def get_quotes_from_web():
 
     print(f"Парсинг сайта {URL}...")
 
-    # Ваш код здесь
+    response = requests.get(URL) #загружает страницу
+    if response.status_code != 200: #проверяем что страница правильно загружена
+        print("Ошибка подключения")
+        return []
+    
+    soup = BeautifulSoup(response.text, "html.parser")
 
-    return []  # Заглушка, замените на возврат реальных данных
+    quotes = []
+
+    for block in soup.find_all("blockcoote",class_="col-md-8"): # все цитаты
+      quote_text = block.find("span", {"class": "text"}).get.text() #Текст цитаты
+      author = block.find("small", {"class": "author"}).get.text( ) #автор
+
+      quotes.append({"text": quote_text, "author": author})
+   
+    return quotes
+   
+ 

@@ -60,8 +60,30 @@ def parse_data(db: Session = Depends(get_db)):
     # [Если сложно - см. файл hints/3_main_logic_hint.txt]
     # =================================================================================
 
-    # Ваш код здесь
+@app.get("/")
+def home(request: Request, db: Session = Depends(get_db)):
+    all_quote = db.query(Quote).all()
+    
+    # Задача: Достать цитаты из БД и передать в шаблон
+    return templates.TemplateResponse("index.html", {"request": request, "text": all_quote})
 
+
+@app.get("/load")
+def load_quote (db: Session = Depends(get_db)):
+    # Задача: Спарсить и сохранить в БД
+    data = get_quotes_from_web()
+
+    for quote in data:
+        new_quote  = Quote(
+            text = quote["text"],
+            author = quote["author"]
+            )
+   
+        db.add(new_quote)
+
+    db.commit() #закомитить
+    
+   
     return RedirectResponse(url="/", status_code=303)
 
 
